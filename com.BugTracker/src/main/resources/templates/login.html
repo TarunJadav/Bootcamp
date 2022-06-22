@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Login Page</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+
+<style>
+.mainh3 h3 {
+	margin-top: 20px;
+	letter-spacing: 4px;
+	text-align: center;
+}
+
+.MainContainer {
+	margin: 10px;
+	margin-left: 500px;
+	padding: 40px;
+	height: 400px;
+	width: 500px;
+	background-color: #F1C40F;
+	border-radius: 10px;
+}
+
+.MainContainer button {
+	margin-top: 10px;
+	margin-left: 200px;
+}
+</style>
+
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">Bug Tracker</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+				aria-controls="navbarNavAltMarkup" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav">
+					<a class="nav-link active" aria-current="page" href="/"></a> <a
+						class="nav-link active" aria-current="page" href="/"></a>
+
+					<div id="navbar" class="collapse navbar-collapse">
+
+						<ul class="nav navbar-nav">
+							<li sec:authorize="isAuthenticated()" style="margin-right: 10px;"><a
+								th:href="@{/logout}">Logout</a></li>
+							<li sec:authorize="isAuthenticated()"><a
+								th:href="@{/profile}" sec:authentication="principal.username"></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</nav>
+
+	<!--form  -->
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-6 conatiner justify-content-center card"></div>
+		</div>
+	</div>
+	<div th:if="${param.error}">
+		<div class="alert alert-danger">invalid email or password !</div>
+	</div>
+	<div class="MainContainer">
+		<div class="mainh3">
+			<h3>Sign in</h3>
+		</div>
+		<form action="/login" method="post">
+			<div class="form-group">
+				<label> Email</label> <input type="text" name="username"
+					placeholder="enter your email" class="form-control"
+					style="text-transform: lowercase">
+
+				<div class="form-group">
+					<label> Password</label> <input type="password" name="password"
+						placeholder="enter your pasword" class="form-control">
+				</div>
+
+				<div class="box-footer">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+		</form>
+	</div>
+</body>
+</html>

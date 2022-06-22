@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Add Project</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">Bug Tracker</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+				aria-controls="navbarNavAltMarkup" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav">
+					<div id="navbar" class="collapse navbar-collapse">
+						<ul class="nav navbar-nav">
+							<li sec:authorize="isAuthenticated()" style="margin-right: 10px;"><a
+								th:href="@{/logout}">Logout</a></li>
+							<li sec:authorize="isAuthenticated()"><a
+								th:href="@{/profile}" sec:authentication="principal.username"></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!--form  -->
+	<div class="container">
+		<div class="row">
+			<!-- success message -->
+			<div th:if="${param.success}">
+				<div class="alert alert-info">You've successfully registered
+					to an user!</div>
+			</div>
+			<div
+				class="col-lg-6  col-md-6 col-sm-6 container justify-content-center card">
+				<h1 class="text-center" style="margin-top: 20px">Create new
+					project</h1>
+				<div class="card-body">
+					<form th:action="@{/addproject}" th:object="${project}"
+						method="post">
+						<div class="form-group">
+							<label>Project name :</label> <input type="text" name="firstname"
+								th:field="*{projectname}" placeholder="Enter your project name"
+								class="form-control">
+						</div>
+						<div class="form-group">
+							<label>Project Technology :</label> <input type="text"
+								name="lastname" th:field="*{techonology}"
+								placeholder="enter techonology" class="form-control">
+						</div>
+						<!-- 			<div class="form-group">
+							<label>Project Status</label> <input type="text" name="email"
+								 placeholder="enter status"
+								class="form-control">
+						</div> -->
+						<div class="form-group">
+							<label>project Status?</label><select name="status" id="status"
+								th:field="*{status}">
+								<option value="In Progress">In Progress</option>
+								<option value="Finished">Finished</option>
+							</select>
+						</div>
+						<div class="box-footer">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

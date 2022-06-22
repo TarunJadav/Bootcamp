@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>bug Form</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<script type="text/javascript" src="../static/js/validation.js"></script>
+
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">Bug Tracker</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+				aria-controls="navbarNavAltMarkup" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav">
+					<div id="navbar" class="collapse navbar-collapse">
+						<ul class="nav navbar-nav">
+							<li sec:authorize="isAuthenticated()" style="margin-right: 10px;"><a
+								th:href="@{/logout}">Logout</a></li>
+							<li sec:authorize="isAuthenticated()"><a
+								th:href="@{/profile}" sec:authentication="principal.username"></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!--form  -->
+	<div class="container">
+		<div class="row">
+			<!-- success message -->
+			<div th:if="${param.success}">
+				<div class="alert alert-info">You've successfully registered
+					to an user!</div>
+			</div>
+
+
+
+			<div
+				class="col-lg-6  col-md-6 col-sm-6 container justify-content-center card">
+				<h1 class="text-center" style="margin-top: 20px">Bug Report</h1>
+				<div class="card-body">
+					<form th:action="@{/bugsolve}" th:object="${bug}" method="post">
+                           
+                           <div class="form-group">
+						<label>Bug  id:</label>
+						 <input type="text" name="id"
+								th:value="*{id}" placeholder="id"
+								class="form-control" >
+						</div>
+                           
+                           
+						<div class="form-group">
+						<label>Project id:</label>
+						 <input type="text" name="Project"
+								th:value="*{project.id}" placeholder="id"
+								class="form-control" >
+						</div>
+						<div class="form-group">
+							<label>bug desc:</label> <input type="text" name="bug_desc"
+								th:field="*{bug_desc}" placeholder="enter bug descrption "
+								class="form-control">
+						</div>
+						<div class="form-group">
+							<label>Bug Status :</label> <input type="text" name="lastname"
+								th:field="*{status}" placeholder="enter bug status"
+								class="form-control">
+						</div>
+
+
+
+						<!-- 	<div class="form-group">
+							<label>User Role</label><select name="ROLES" id="ROLES">
+								<option value="2">DEVLOPER</option>
+								<option value="3">TESTER</option>
+							</select>
+						</div> -->
+						<div class="box-footer">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
