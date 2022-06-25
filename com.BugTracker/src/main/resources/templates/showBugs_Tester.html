@@ -54,7 +54,7 @@
 	<br>
 	<div class="container">
 		<div class=row>
-			<h1>View Your Assigned Bugs</h1>
+			<h1>View Your  Bugs</h1>
 		</div>
 
 		<div class="row">
@@ -67,7 +67,7 @@
 				<tr>
 					<th>Bug desc</th>
 					<th>Bug Status</th>
-					<th>Team</th>
+					<th>Assigned  Devloper</th>
 					<th>Project</th>
                     <th>Action</th>
                     
@@ -78,9 +78,12 @@
 				<tr th:each=bug:${bug}>
 					<td th:text="${bug.bug_desc}"></td>
 					<td th:text="${bug.status}"></td>
-					<td th:text="${bug.teams.teamname}"></td>
+					<td th:text="${bug.user.firstname}"></td>
 					<td th:text="${bug.project.id}"></td>
-					<td>
+										<td><a
+							th:href=@{bugreopen/adduser/{bugid}(bugid=${bug.id})}
+							class="btn btn-primary" style="margin-bottom: 10px;">Re-Open Bug
+								</a></td>
 
 				</tr>
 

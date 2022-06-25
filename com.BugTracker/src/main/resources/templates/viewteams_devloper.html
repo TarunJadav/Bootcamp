@@ -76,6 +76,8 @@
 					<td th:text="${team.teamname}"></td>
 					<td><a th:href=@{team/viewteams/{id}(id=${team.id})}
 						class="btn btn-info">Show Team Members</a></td>
+						<td><a th:href=@{team/viewteamsProject/{id}(id=${team.id})}
+						class="btn btn-info">Show Team Project</a></td>
 				</tr>
 
 			</tbody>

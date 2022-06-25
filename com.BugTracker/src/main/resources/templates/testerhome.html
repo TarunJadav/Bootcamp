@@ -8,7 +8,9 @@
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
 </head>
-<body >
+<body>
+
+	
 	<nav class="navbar navbar-expand-lg navbar-light bg-warning">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="/">Bug Tracker</a>
@@ -32,13 +34,19 @@
 			</div>
 		</div>
 	</nav>
-<br>
+	
+	
+	<!-- success message -->
+	<div th:if="${param.projectfinished}">
+		<div class="alert alert-primary">project finished!</div>
+	</div>
+	<br>
 	<a class="btn btn-outline-danger" style="margin-right: 10px;"
 		type="submit" th:href="showuserproject">Show Your Projects</a>
 	<a class="btn btn-outline-primary" style="margin-right: 10px;"
-		type="submit" th:href="showdusersteam">Show Your Teams</a>	
-		<a class="btn btn-outline-danger" style="margin-right: 10px;"
-		type="submit" th:href="showtesterbugs">Show Your Bugs</a>	
-		
+		type="submit" th:href="showdusersteam">Show Your Teams</a>
+	<a class="btn btn-outline-danger" style="margin-right: 10px;"
+		type="submit" th:href="showtesterbugs">Show Your Bugs</a>
+
 </body>
 </html>

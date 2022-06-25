@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.BugTracker.entity.Bug;
 import com.BugTracker.entity.Project;
-import com.BugTracker.entity.Team;
 import com.BugTracker.entity.User;
 import com.BugTracker.repository.BugRepository;
 import com.BugTracker.service.BugService;
@@ -37,29 +36,21 @@ public class BugServiceImpl implements BugService {
 	}
 
 	@Override
-	public List<Bug> findAllByTeams(Team team) {
-
-		return bugRepository.findAllByTeams(team);
-	}
-
-	@Override
 	public List<Bug> findAllByProjects(Project project) {
-		
+
 		return bugRepository.findAllByProject(project);
 	}
 
 	@Override
-	public List<Bug> findAllByUsers(User user) {
-		
-		return bugRepository.findAllByTester(user);
+	public List<Bug> findAllByUser(User user) {
+
+		return bugRepository.findAllByUser(user);
 	}
 
 	@Override
-	public Bug findByTeam(Team team) {
-		
-		return bugRepository.findByTeams(team);
-	}
+	public List<Bug> findAllByTester(User user) {
 
-	
+		return bugRepository.findAllByTester(user);
+	}
 
 }

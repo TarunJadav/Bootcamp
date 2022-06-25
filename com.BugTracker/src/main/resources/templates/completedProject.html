@@ -68,9 +68,15 @@
 	<div th:if="${param.delete}">
 		<div class="alert alert-danger">Project Deleted!</div>
 	</div>
+	
+	
 	<div class="container">
+	
+	<a class="btn btn-outline-danger" style="margin-right: 10px;"
+		type="submit" th:href="download"> Download As A Pdf</a>
 		<div class=row>
 			<h1>List Of Projects</h1>
+			
 		</div>
 		<div class="row">
 			<div class="col-lg-3"></div>
@@ -82,6 +88,7 @@
 					<th>Project Techonology</th>
 					<th>Is Deleted</th>
 					<th>Project Status</th>
+					<th>Action</th>
 
 				</tr>
 			</thead>
@@ -91,6 +98,11 @@
 					<td th:text="${project.techonology}"></td>
 					<td th:text="${project.isdeleted}"></td>
 					<td th:text="${project.status}"></td>
+					
+					<td><a th:href=@{project/report/{id}(id=${project.id})}
+						class="btn btn-danger"	
+						onclick="return confirm('Pakka na ? 😓😓😕')">Generate Report</a></td>
+					
 					
 
 

@@ -69,13 +69,14 @@
 	<div th:if="${param.delete}">
 		<div class="alert alert-danger">Team Deleted!</div>
 	</div>
+	
 
 
 
 	<form action="" th:object="${bug}">
 		<div class="container">
 			<div class=row>
-				<h1>List Of Team</h1>
+				<h1>List Of Devlopers</h1>
 			</div>
 			<div class="form-group">
 				<input type="text" name="Project" th:value="*{id}" placeholder="id"
@@ -100,8 +101,8 @@
 						<td th:text="${user.firstname}"></td>
 						<td><a
 							th:href=@{team/adduser/{id}/{bugid}(id=${user.id},bugid=${bug.id})}
-							class="btn btn-primary" style="margin-bottom: 10px;">Add Bug
-								to a team</a></td>
+							class="btn btn-primary" style="margin-bottom: 10px;">Assign
+								bug to devloper </a></td>
 
 					</tr>
 				</tbody>

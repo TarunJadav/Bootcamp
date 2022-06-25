@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.BugTracker.entity.Bug;
 import com.BugTracker.entity.Project;
-import com.BugTracker.entity.Team;
+
 import com.BugTracker.entity.User;
 
 public interface BugService {
@@ -16,13 +16,13 @@ public interface BugService {
 	
 	List<Bug> getAllBugs();
 	
-	List<Bug> findAllByTeams(Team team);
+	List<Bug> findAllByTester(User user);
 	
 	List<Bug> findAllByProjects(Project project);
 	
-	List<Bug> findAllByUsers(User user);
+	List<Bug> findAllByUser(User user);
 	
-	Bug findByTeam(Team team);
+
 	
   
 

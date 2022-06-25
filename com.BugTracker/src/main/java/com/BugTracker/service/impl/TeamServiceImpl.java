@@ -3,8 +3,6 @@ package com.BugTracker.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.BugTracker.entity.Bug;
 import com.BugTracker.entity.Project;
 import com.BugTracker.entity.Team;
 import com.BugTracker.entity.User;
@@ -56,11 +54,7 @@ public class TeamServiceImpl implements TeamService {
 		return teamRepository.findAllByProjects(project);
 	}
 
-	@Override
-	public List<Team> findAllByBugs(Bug bug) {
-		
-		return teamRepository.findAllByBugs(bug);
-	}
+	
 	
 	
 

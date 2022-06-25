@@ -2,7 +2,9 @@ package com.BugTracker.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import com.BugTracker.entity.Team;
 import com.BugTracker.entity.User;
 import com.BugTracker.entity.UserRole;
 import com.BugTracker.service.BugService;
+import com.BugTracker.service.PdfGenerateService;
 import com.BugTracker.service.ProjectService;
 import com.BugTracker.service.ReportService;
 import com.BugTracker.service.TeamService;
@@ -51,6 +54,9 @@ public class MainController {
 
 	@Autowired
 	private ReportService reportService;
+
+	@Autowired
+	private PdfGenerateService pdfGenerateService;
 
 	@GetMapping("/")
 	public String homeShow(Principal principal, User user, Model model) {
@@ -118,7 +124,20 @@ public class MainController {
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 
 	public String showUsers(Model model) {
-		model.addAttribute("user", userService.getAllUsers());
+
+		List<User> users = new ArrayList<User>();
+		List<User> userlist = userService.getAllUsers();
+		for (User user : userlist) {
+			String role = user.getRole().toString();
+
+			if (role.contains("UNASSIGN")) {
+				continue;
+			} else {
+				users.add(user);
+			}
+		}
+
+		model.addAttribute("user", users);
 
 		return "viewusers";
 	}
@@ -146,7 +165,7 @@ public class MainController {
 
 		}
 
-		List<Bug> bugsList = bugService.findAllByUsers(user);
+		List<Bug> bugsList = bugService.findAllByUser(user);
 
 		for (Bug bug : bugsList) {
 
@@ -234,7 +253,7 @@ public class MainController {
 		return "devloper_view_teamuser.html";
 	}
 
-	// user view Project here
+	// tester view Project here
 
 	@GetMapping("/showuserproject")
 	public String showProjects(Principal principal, User user, Model model, Team team, Project project) {
@@ -253,7 +272,11 @@ public class MainController {
 
 			for (Project project2 : projects) {
 				System.out.println(project2);
-				proList.add(project2);
+				if (project2.getStatus().contains("finished")) {
+					continue;
+				} else {
+					proList.add(project2);
+				}
 			}
 
 		}
@@ -304,6 +327,30 @@ public class MainController {
 		project = report.getPid();
 
 		reportService.saveReport(report);
+
+		return "redirect:/";
+	}
+
+	@GetMapping("/team/viewteamsProject/{id}")
+	public String showTeamsProject(@PathVariable Long id, Model model, Team team) {
+
+		team = teamService.getTeamById(id);
+
+		List<Project> projects = projectService.findAllByTeams(team);
+		model.addAttribute("project", projects);
+
+		return "teams_projects";
+	}
+
+	@GetMapping("/download")
+	public String downloadPagae(Principal principal) {
+		List<User> user = userService.getAllUsers();
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("user", user);
+		pdfGenerateService.generatePdfFile("viewusers", data, "quotation.pdf");
+
+		System.out.println("ho gayaaa bhaii");
 
 		return "redirect:/";
 	}

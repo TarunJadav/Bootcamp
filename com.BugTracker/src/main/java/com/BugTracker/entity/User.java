@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -28,8 +29,11 @@ public class User {
 	private UserRole role;
 
 	@ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-			
+
 	private List<Team> teams = new ArrayList<>();
+
+	@OneToMany
+	private List<Bug> bugs = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -79,8 +83,24 @@ public class User {
 		this.teams = teams;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public List<Bug> getBugs() {
+		return bugs;
+	}
+
+	public void setBugs(List<Bug> bugs) {
+		this.bugs = bugs;
+	}
+
 	public User(Long id, String firstname, String lastname, String username, String password, UserRole role,
-			List<Team> teams) {
+			List<Team> teams, List<Bug> bugs) {
 		super();
 		this.id = id;
 		this.firstname = firstname;
@@ -89,14 +109,7 @@ public class User {
 		this.password = password;
 		this.role = role;
 		this.teams = teams;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
+		this.bugs = bugs;
 	}
 
 	public User() {

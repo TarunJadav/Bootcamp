@@ -1,7 +1,5 @@
 package com.BugTracker.entity;
 
-
-
 import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
@@ -22,15 +20,14 @@ public class Bug {
 	private String bug_desc;
 	private String status;
 
-
 	@OneToOne(cascade = CascadeType.ALL)
 	private User tester;
 
 	@OneToOne
 	private Project project;
-
+	
 	@ManyToOne
-	private Team teams;
+	private User user;
 
 	public Long getId() {
 		return id;
@@ -72,29 +69,28 @@ public class Bug {
 		this.project = project;
 	}
 
+	
 
-	public Team getTeams() {
-		return teams;
+	public User getUser() {
+		return user;
 	}
 
-	public void setTeams(Team teams) {
-		this.teams = teams;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public Bug(Long id, String bug_desc, String status, User tester, Project project, Team teams) {
+	public Bug(Long id, String bug_desc, String status, User tester, Project project, User user) {
 		super();
 		this.id = id;
 		this.bug_desc = bug_desc;
 		this.status = status;
 		this.tester = tester;
 		this.project = project;
-		this.teams = teams;
+		this.user = user;
 	}
 
 	public Bug() {
 		super();
 	}
-
-	
 
 }

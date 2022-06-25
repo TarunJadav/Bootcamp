@@ -52,29 +52,42 @@
 					<form th:action="@{/bug}" th:object="${bug}" method="post">
 
 						<div class="form-group">
-						 <input type="text" name="Project"
-								th:value="*{project.id}" placeholder="id"
-								class="form-control" hidden="">
+							<input type="text" name="Project" th:value="*{project.id}"
+								placeholder="id" class="form-control" hidden="">
 						</div>
 						<div class="form-group">
 							<label>bug desc:</label> <input type="text" name="bug_desc"
 								th:field="*{bug_desc}" placeholder="enter bug descrption "
-								class="form-control">
+								class="form-control" required="required" autofocus="autofocus">
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label>Bug Status :</label> <input type="text" name="lastname"
 								th:field="*{status}" placeholder="enter bug status"
 								class="form-control">
+						</div> -->
+
+
+
+						<div class="form-group">
+							<label>Status</label><select th:field="*{status}" name="status"
+								id="status">
+								<option value="to-do">to-do</option>
+
+
+
+
+							</select>
 						</div>
 
-
-
-						<!-- 	<div class="form-group">
-							<label>User Role</label><select name="ROLES" id="ROLES">
-								<option value="2">DEVLOPER</option>
-								<option value="3">TESTER</option>
+						<br />
+						<div class="form-group">
+							<label>Assign To Devloper</label> <select th:field="*{user}">
+								<option th:each="user : ${user}" th:value="${user.id}"
+									th:text="${user.firstname}"></option>
 							</select>
-						</div> -->
+
+						</div>
+
 						<div class="box-footer">
 							<button type="submit" class="btn btn-primary">Submit</button>
 						</div>

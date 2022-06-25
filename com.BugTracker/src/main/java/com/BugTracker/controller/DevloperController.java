@@ -2,9 +2,12 @@ package com.BugTracker.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +41,8 @@ public class DevloperController {
 	// user view Project here
 
 	@GetMapping("/showdevloperproject")
+	@Secured("ROLE_DEVLOPER")
+	@PreAuthorize("hasAuthority('ROLE_DEVLOPER')")
 	public String showProjects(Principal principal, User user, Model model, Team team, Project project) {
 
 		List<Team> teams = new ArrayList<Team>();
@@ -64,58 +69,62 @@ public class DevloperController {
 	}
 
 	@GetMapping("/viewbugs")
+	@Secured("ROLE_DEVLOPER")
+	@PreAuthorize("hasAuthority('ROLE_DEVLOPER')")
 	public String viewBugs(Principal principal, User user, Team team, Bug bug, Model model) {
 
-		List<Team> teams = new ArrayList<>();
-		List<Bug> bugs = new ArrayList<>();
-		List<Bug> bugList = new ArrayList<>();
-
 		user = userService.findByUsername(principal.getName());
-		teams = teamService.findAllByUsers(user);
 
-		for (Team team2 : teams) {
-			bugs = bugService.findAllByTeams(team2);
-			for (Bug bug2 : bugs) {
-              
-				if (bug2.getStatus().contains("solved")) {
+		List<Bug> bugList = bugService.findAllByUser(user);
+		List<Bug> list = new ArrayList<Bug>();
+
+		Iterator<Bug> itr = bugList.iterator();
+		while (itr.hasNext()) {
+			Bug bug2 = (Bug) itr.next();
+			if (bug2.getStatus().contains("solved")) {
+				continue;
+			} else {
+				Project project = bug2.getProject();
+				if (project.getStatus().contains("finished")) {
 					continue;
-				}else {
-					bugList.add(bug2);
+				} else {
+					list.add(bug2);
 				}
-				
-				
-
 			}
 
 		}
 
-		model.addAttribute("bug", bugList);
+		model.addAttribute("bug", list);
 
 		return "viewbugs_devloper";
 	}
 
 	@GetMapping("/project/solvebug/{id}")
+	@Secured("ROLE_DEVLOPER")
+	@PreAuthorize("hasAuthority('ROLE_DEVLOPER')")
 	public String solveBug(@PathVariable Long id, Bug bug, Model model) {
 
-		
 		System.out.println(id);
 		bug = bugService.getBugById(id);
-		model.addAttribute("bug", bug);
+		bug.setStatus("solved");
 
-		return "devloper_solvebug";
-	}
-	@PostMapping("/bugsolve")
-	public String solveBug(Bug bug) {
-		
-		Bug existingBug=bugService.getBugById(bug.getId());
-		
-		
-		existingBug.setStatus(bug.getStatus());
-		
-		bugService.saveBug(existingBug);		
-		
+		bugService.saveBug(bug);
+
 		return "redirect:/";
 	}
-	
+
+	@PostMapping("/bugsolve")
+	@Secured("ROLE_DEVLOPER")
+	@PreAuthorize("hasAuthority('ROLE_DEVLOPER')")
+	public String solveBug(Bug bug) {
+
+		Bug existingBug = bugService.getBugById(bug.getId());
+
+		existingBug.setStatus(bug.getStatus());
+
+		bugService.saveBug(existingBug);
+
+		return "redirect:/";
+	}
 
 }

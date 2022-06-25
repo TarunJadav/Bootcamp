@@ -64,6 +64,11 @@
 		<div class="alert alert-danger">Team Removed From Project !</div>
 	</div>
 
+	<!-- team exist -->
+	<div th:if="${param.exist}">
+		<div class="alert alert-danger">Team alredy assigned to team!</div>
+	</div>
+
 	<!-- delete message -->
 	<div th:if="${param.delete}">
 		<div class="alert alert-danger">Project Deleted!</div>

@@ -50,22 +50,26 @@
 						<div class="form-group">
 							<label>User First Name :</label> <input type="text"
 								name="firstname" th:field="*{firstname}"
-								placeholder="enter your first name" class="form-control">
+								placeholder="enter your first name" class="form-control"
+								required="required" autofocus="autofocus" minlength="2">
 						</div>
 						<div class="form-group">
 							<label>User last Name :</label> <input type="text"
 								name="lastname" th:field="*{lastname}"
-								placeholder="enter your last name" class="form-control">
+								placeholder="enter your last name" class="form-control"
+								required="required" autofocus="autofocus" minlength="2">
 						</div>
 						<div class="form-group">
 							<label>User Email : </label> <input type="email" name="email"
 								th:field="*{username}" placeholder="enter your email"
-								class="form-control" style="text-transform: lowercase">
+								class="form-control" style="text-transform: lowercase"
+								required="required" autofocus="autofocus" minlength="2">
 						</div>
 						<div class="form-group">
-							<label>User Password :</label> <input type="password" name="email"
-								th:field="*{password}" placeholder="enter your email"
-								class="form-control">
+							<label>User Password :</label> <input type="password"
+								name="email" th:field="*{password}"
+								placeholder="enter your email" class="form-control"
+								required="required" autofocus="autofocus" minlength="2">
 						</div>
 						<div class="form-group">
 							<label>User Role</label><select name="ROLES" id="ROLES">

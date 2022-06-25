@@ -68,8 +68,8 @@
 					<th>Project Name</th>
 					<th>Project Technology</th>
 					<th>Project Status</th>
-                    <th>Action</th>
-                    
+					<th colspan="2">Action</th>
+
 				</tr>
 
 			</thead>
@@ -78,10 +78,14 @@
 					<td th:text="${project.projectname}"></td>
 					<td th:text="${project.techonology}"></td>
 					<td th:text="${project.status}"></td>
-					<td><a
-						th:href="@{project/bug/{id}(id=${project.id})}"
+					<td><a th:href="@{project/bug/{id}(id=${project.id})}"
 						class="btn btn-danger"
 						onclick="return confirm('Pakka na ? 😓😓😕')">add bug</a></td>
+
+					<td><a th:href="@{project/finished/{id}(id=${project.id})}"
+						class="btn btn-primary"
+						onclick="return confirm('Pakka na ? 😓😓😕')">Project Finished</a></td>
+
 
 				</tr>
 

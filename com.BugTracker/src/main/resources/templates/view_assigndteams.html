@@ -57,7 +57,7 @@
 	<form action="" method="get" th:object="${project}">
 		<div class="container">
 			<div class=row>
-				<h1>List Of Users</h1>
+				<h1>List Of Teams</h1>
 			</div>
 
 			<div class="row">
@@ -84,7 +84,7 @@
 							<td><a
 								th:href="@{team/remove/{id}/{teamid} (id=${project.id},teamid=${team.id})}"
 								class="btn btn-danger"
-								onclick="return confirm('Pakka na ? 😓😓😕')">Remove User</a></td>
+								onclick="return confirm('Pakka na ? 😓😓😕')">Remove Team</a></td>
 						</tr>
 					</tbody>
 				</table>

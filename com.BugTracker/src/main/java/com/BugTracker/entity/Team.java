@@ -1,7 +1,6 @@
 package com.BugTracker.entity;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Team {
@@ -20,15 +18,14 @@ public class Team {
 	private Long id;
 	private String teamname;
 
+	private String teamrole;
+
 	@ManyToMany()
-	private Set<User> users = new HashSet<>(); 
+	private Set<User> users = new HashSet<>();
 
 	@ManyToMany(mappedBy = "teams", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Project> projects = new HashSet<>(); 
-	
-	@OneToMany
-	private List<Bug> bugs;
-	
+	private Set<Project> projects = new HashSet<>();
+
 	public Long getId() {
 		return id;
 	}
@@ -71,24 +68,23 @@ public class Team {
 		this.projects = projects;
 	}
 
-	public List<Bug> getBugs() {
-		return bugs;
+	public String getTeamrole() {
+		return teamrole;
 	}
 
-	public void setBugs(List<Bug> bugs) {
-		this.bugs = bugs;
+	public void setTeamrole(String teamrole) {
+		this.teamrole = teamrole;
 	}
 
-	public Team(Long id, String teamname, Set<User> users, Set<Project> projects, List<Bug> bugs) {
+	public Team(Long id, String teamname, String teamrole, Set<User> users, Set<Project> projects) {
 		super();
 		this.id = id;
 		this.teamname = teamname;
+		this.teamrole = teamrole;
 		this.users = users;
 		this.projects = projects;
-		this.bugs = bugs;
 	}
 
-
-
+	
 
 }

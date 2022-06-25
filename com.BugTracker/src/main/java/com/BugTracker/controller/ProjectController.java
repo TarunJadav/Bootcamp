@@ -1,6 +1,7 @@
 package com.BugTracker.controller;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.BugTracker.entity.Bug;
 import com.BugTracker.entity.Project;
+import com.BugTracker.entity.Report;
 import com.BugTracker.entity.Team;
+import com.BugTracker.repository.ReportRepository;
 import com.BugTracker.service.BugService;
 import com.BugTracker.service.ProjectService;
 import com.BugTracker.service.TeamService;
@@ -30,6 +33,9 @@ public class ProjectController {
 
 	@Autowired
 	private BugService bugService;
+
+	@Autowired
+	private ReportRepository reportRepository;
 
 	@GetMapping("/addproject")
 	@Secured("ROLE_ADMIN")
@@ -63,7 +69,27 @@ public class ProjectController {
 	@GetMapping("/showproject")
 	public String showProjects(Model model) {
 
-		model.addAttribute("project", projectService.getAllProjects());
+		List<Project> projects = new ArrayList<>();
+
+		List<Project> proList = projectService.getAllProjects();
+		for (Project project : proList) {
+
+			String projectname = project.getProjectname().toString();
+			if (projectname.contains("unassigned")) {
+				continue;
+			} else {
+				
+				
+				Report report=reportRepository.findByPid(project);
+				if (report==null) {
+					projects.add(project);
+				}
+			}
+		}
+		
+		
+
+		model.addAttribute("project", projects);
 
 		return "project_View";
 	}
@@ -104,6 +130,19 @@ public class ProjectController {
 
 		project.getTeams().add(team);
 		team.getProjects().add(project);
+
+		List<Project> projects = projectService.findAllByTeams(team);
+		if (projects != null) {
+
+			for (Project project2 : projects) {
+
+				if (project2.getTeams().equals(project.getTeams())) {
+
+					return "redirect:/showproject?exist";
+				}
+			}
+
+		}
 
 		projectService.saveProject(project);
 		teamService.saveTeam(team);
@@ -176,7 +215,19 @@ public class ProjectController {
 
 			if (project.getStatus().contains("finished")) {
 
-				projects.add(project);
+				if (project != null) {
+
+					Report report = reportRepository.findByPid(project);
+					if (report != null) {
+
+						continue;
+
+					} else {
+						projects.add(project);
+
+					}
+				}
+
 			}
 		}
 

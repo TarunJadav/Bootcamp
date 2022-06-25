@@ -3,6 +3,7 @@ package com.BugTracker.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.BugTracker.entity.Project;
 import com.BugTracker.entity.Report;
 import com.BugTracker.repository.ReportRepository;
 import com.BugTracker.service.ReportService;
@@ -18,6 +19,13 @@ public class ReportServiceImpl implements ReportService{
 	public Report saveReport(Report report) {
 		
 		return reportRepository.save(report);
+	}
+
+
+	@Override
+	public Report findByPid(Project project) {
+		
+		return reportRepository.findByPid(project);
 	}
 
 	

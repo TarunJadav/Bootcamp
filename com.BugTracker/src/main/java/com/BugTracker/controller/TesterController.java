@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,37 +47,13 @@ public class TesterController {
 
 		project = projectService.getProjectById(id);
 		user = userService.findByUsername(principal.getName());
-		List<Team> teams = teamService.findAllByUsers(user);
-
-		bug.setTester(user);
-		bug.setProject(project);
-		// bug.setTeams(teams);
-		for (Team team2 : teams) {
-			bug.setTeams(team2);
-		}
-
-		model.addAttribute("bug", bug);
-
-		return "bug";
-	}
-
-	@PostMapping("/bug")
-	public String bugReport(@RequestParam("Project") Long id, Bug bug, Principal principal, User user, Project project,
-			Model model) {
-		user = userService.findByUsername(principal.getName());
-		project = projectService.getProjectById(id);
-
-		bug.setTester(user);
-		bug.setProject(project);
-
-		bugService.saveBug(bug);
 
 		Set<User> userList = new HashSet<User>();
 
 		List<Team> teams = teamService.findAllByProjects(project);
-		for (Team team : teams) {
+		for (Team team2 : teams) {
 
-			Set<User> user2 = userService.findAllByTeams(team);
+			Set<User> user2 = userService.findAllByTeams(team2);
 
 			for (User user3 : user2) {
 				String Role = "ROLE_DEVLOPER";
@@ -90,50 +68,74 @@ public class TesterController {
 
 		}
 
+		bug.setTester(user);
+		bug.setProject(project);
+
 		model.addAttribute("bug", bug);
 		model.addAttribute("user", userList);
 
-		return "Assignbug_team";
+		return "bug";
 	}
 
-	@GetMapping("team/adduser/{id}/{bugid}")
-	public String assignBug(Model model, @PathVariable("id") Long teamid, @PathVariable("bugid") Long bugid, Team team,
-			Bug bug) {
+	@PostMapping("/bug")
+	@Secured("ROLE_TESTER")
+	@PreAuthorize("hasAuthority('ROLE_TESTER')")
+	public String bugReport(@RequestParam("Project") Long id, Bug bug, Principal principal, User user, Project project,
+			Model model) {
+		user = userService.findByUsername(principal.getName());
+		project = projectService.getProjectById(id);
 
-		team = teamService.getTeamById(teamid);
-		bug = bugService.getBugById(bugid);
+		User devloper = bug.getUser();
 
-		team.getBugs().add(bug);
-		bug.setTeams(team);
+		bug.setTester(user);
+		bug.setProject(project);
+
+		devloper.getBugs().add(bug);
+		bug.setUser(devloper);
 
 		bugService.saveBug(bug);
-
-		teamService.saveTeam(team);
+		userService.saveUser(devloper);
 
 		return "redirect:/";
 	}
 
 	@GetMapping("/showtesterbugs")
+	@Secured("ROLE_TESTER")
+	@PreAuthorize("hasAuthority('ROLE_TESTER')")
 	public String showTesterBugs(Principal principal, Model model, User user) {
 
 		user = userService.findByUsername(principal.getName());
+		List<Bug> bugsList = bugService.findAllByTester(user);
+		List<Bug> list = new ArrayList<Bug>();
+		for (Bug bug : bugsList) {
 
-		List<Bug> bugsList = new ArrayList<Bug>();
+			Project project = bug.getProject();
+			if (project.getStatus().contains("finished")) {
+				continue;
+			} else {
+				list.add(bug);
 
-		List<Team> teams = teamService.findAllByUsers(user);
-
-		for (Team team : teams) {
-
-			List<Bug> bug = bugService.findAllByTeams(team);
-
-			bugsList.addAll(bug);
+			}
 
 		}
 
-		model.addAttribute("bug", bugsList);
+		model.addAttribute("bug", list);
 
 		return "showBugs_Tester";
 
+	}
+
+	@GetMapping("/bugreopen/adduser/{bugid}")
+	@Secured("ROLE_TESTER")
+	@PreAuthorize("hasAuthority('ROLE_TESTER')")
+	public String reAssignBug(@PathVariable Long bugid) {
+
+		Bug bug = bugService.getBugById(bugid);
+
+		bug.setStatus("pending");
+		bugService.saveBug(bug);
+
+		return "redirect:/";
 	}
 
 }
