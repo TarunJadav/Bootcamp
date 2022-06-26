@@ -7,8 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -39,6 +41,7 @@ import com.BugTracker.service.ReportService;
 import com.BugTracker.service.TeamService;
 import com.BugTracker.service.UserService;
 import com.BugTracker.service.impl.UserExcelExporter;
+import com.BugTracker.service.impl.UserExcelExporterReport;
 
 /**
  * 
@@ -199,7 +202,7 @@ public class MainController {
 	}
 
 	@GetMapping("/user/update/{id}")
-	
+
 	public String updateUser(@PathVariable Long id, Model model) {
 
 		model.addAttribute("user", userService.getUserById(id));
@@ -249,7 +252,7 @@ public class MainController {
 
 	// user view team starts here
 	@GetMapping("/showdusersteam")
-	
+
 	public String showTeams(Principal principal, User user, Model model) {
 
 		user = userService.findByUsername(principal.getName());
@@ -412,8 +415,7 @@ public class MainController {
 		return "redirect:/";
 	}
 
-	
-	//EXCEL REPORT
+	// EXCEL REPORT
 	@GetMapping("project/downloadExcel")
 	@Secured("ROLE_ADMIN")
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -433,6 +435,152 @@ public class MainController {
 		UserExcelExporter excelExporter = new UserExcelExporter(reports);
 
 		excelExporter.export(response);
+
+	}
+
+	// USER PERFORMENCE
+
+	@GetMapping("/userperformence")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	public String userPerformence(Model model) {
+
+		List<Report> reportliList = reportService.findAllReport();
+
+		Set<User> listdevloper = new HashSet<User>();
+		Set<User> listtester = new HashSet<User>();
+
+		for (Report report : reportliList) {
+			Project project = report.getPid();
+			List<Bug> bugList = bugService.findAllByProjects(project);
+			for (Bug bug : bugList) {
+				User tester = bug.getTester();
+				User devloper = bug.getUser();
+
+				List<Bug> testerBugs = bugService.findAllByTester(tester);
+				List<Bug> devloperBugs = bugService.findAllByUser(devloper);
+
+				System.out.println(testerBugs.size());
+				System.out.println(devloperBugs.size());
+
+				devloper.setTotalbugs(Long.valueOf(devloperBugs.size()));
+				tester.setTotalbugs(Long.valueOf(testerBugs.size()));
+
+				userService.saveUser(devloper);
+				userService.saveUser(tester);
+
+				listdevloper.add(devloper);
+				listtester.add(tester);
+
+			}
+		}
+
+		model.addAttribute("devloper", listdevloper);
+		model.addAttribute("tester", listtester);
+
+		return "UserReport";
+	}
+
+	// DOWNLOAD USER REPORT AS AN EXCEL FILE
+	@GetMapping("/downloadUserReport")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	public void downloadUserReportExcel(Model model, HttpServletResponse response) throws IOException {
+
+		List<Report> reportliList = reportService.findAllReport();
+
+		Set<User> listdevloper = new HashSet<User>();
+		Set<User> listtester = new HashSet<User>();
+
+		for (Report report : reportliList) {
+			Project project = report.getPid();
+			List<Bug> bugList = bugService.findAllByProjects(project);
+			for (Bug bug : bugList) {
+				User tester = bug.getTester();
+				User devloper = bug.getUser();
+
+				List<Bug> testerBugs = bugService.findAllByTester(tester);
+				List<Bug> devloperBugs = bugService.findAllByUser(devloper);
+
+				System.out.println(testerBugs.size());
+				System.out.println(devloperBugs.size());
+
+				devloper.setTotalbugs(Long.valueOf(devloperBugs.size()));
+				tester.setTotalbugs(Long.valueOf(testerBugs.size()));
+
+				userService.saveUser(devloper);
+				userService.saveUser(tester);
+
+				listdevloper.add(devloper);
+				listtester.add(tester);
+
+			}
+		}
+
+		response.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerValue = "attachment; filename=UserReports" + currentDateTime + ".xlsx";
+
+		String headerKey = "Content-Disposition";
+		response.setHeader(headerKey, headerValue);
+
+		UserExcelExporterReport excelExporterReport = new UserExcelExporterReport(listdevloper);
+
+		excelExporterReport.export(response);
+
+	}
+
+	//TESTER EXCEL FILE DOWNLOAD
+	
+	@GetMapping("/downloadtesterReport")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	public void downloadUserReportExcelTester(Model model, HttpServletResponse response) throws IOException {
+
+		List<Report> reportliList = reportService.findAllReport();
+
+		Set<User> listdevloper = new HashSet<User>();
+		Set<User> listtester = new HashSet<User>();
+
+		for (Report report : reportliList) {
+			Project project = report.getPid();
+			List<Bug> bugList = bugService.findAllByProjects(project);
+			for (Bug bug : bugList) {
+				User tester = bug.getTester();
+				User devloper = bug.getUser();
+
+				List<Bug> testerBugs = bugService.findAllByTester(tester);
+				List<Bug> devloperBugs = bugService.findAllByUser(devloper);
+
+				System.out.println(testerBugs.size());
+				System.out.println(devloperBugs.size());
+
+				devloper.setTotalbugs(Long.valueOf(devloperBugs.size()));
+				tester.setTotalbugs(Long.valueOf(testerBugs.size()));
+
+				userService.saveUser(devloper);
+				userService.saveUser(tester);
+
+				listdevloper.add(devloper);
+				listtester.add(tester);
+
+			}
+		}
+
+		response.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerValue = "attachment; filename=UserReportsTester" + currentDateTime + ".xlsx";
+
+		String headerKey = "Content-Disposition";
+		response.setHeader(headerKey, headerValue);
+
+		UserExcelExporterReport excelExporterReport = new UserExcelExporterReport(listtester);
+
+		excelExporterReport.export(response);
 
 	}
 

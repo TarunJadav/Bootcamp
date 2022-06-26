@@ -22,6 +22,7 @@ public class User {
 	private Long id;
 	private String firstname;
 	private String lastname;
+	private Long totalbugs;
 	@Column(unique = true)
 	private String username;
 	private String password;
@@ -99,12 +100,25 @@ public class User {
 		this.bugs = bugs;
 	}
 
-	public User(Long id, String firstname, String lastname, String username, String password, UserRole role,
-			List<Team> teams, List<Bug> bugs) {
+	public User() {
+		super();
+	}
+
+	public Long getTotalbugs() {
+		return totalbugs;
+	}
+
+	public void setTotalbugs(Long totalbugs) {
+		this.totalbugs = totalbugs;
+	}
+
+	public User(Long id, String firstname, String lastname, Long totalbugs, String username, String password,
+			UserRole role, List<Team> teams, List<Bug> bugs) {
 		super();
 		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.totalbugs = totalbugs;
 		this.username = username;
 		this.password = password;
 		this.role = role;
@@ -112,14 +126,11 @@ public class User {
 		this.bugs = bugs;
 	}
 
-	public User() {
-		super();
-	}
-
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", username=" + username
-				+ ", password=" + password + ", role=" + role + ", teams=" + teams + "]";
+		return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", totalbugs=" + totalbugs
+				+ ", username=" + username + ", password=" + password + ", role=" + role + ", teams=" + teams
+				+ ", bugs=" + bugs + "]";
 	}
 
 }
