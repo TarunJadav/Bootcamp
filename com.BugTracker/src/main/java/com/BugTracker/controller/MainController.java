@@ -1,12 +1,19 @@
 package com.BugTracker.controller;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +38,7 @@ import com.BugTracker.service.ProjectService;
 import com.BugTracker.service.ReportService;
 import com.BugTracker.service.TeamService;
 import com.BugTracker.service.UserService;
+import com.BugTracker.service.impl.UserExcelExporter;
 
 /**
  * 
@@ -181,6 +189,8 @@ public class MainController {
 	}
 
 	@GetMapping("/searchuser")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public String searchUser(@RequestParam("firstname") String firstname, Model model) {
 
 		model.addAttribute("user", userService.findByFirstname(firstname));
@@ -189,6 +199,7 @@ public class MainController {
 	}
 
 	@GetMapping("/user/update/{id}")
+	
 	public String updateUser(@PathVariable Long id, Model model) {
 
 		model.addAttribute("user", userService.getUserById(id));
@@ -238,6 +249,7 @@ public class MainController {
 
 	// user view team starts here
 	@GetMapping("/showdusersteam")
+	
 	public String showTeams(Principal principal, User user, Model model) {
 
 		user = userService.findByUsername(principal.getName());
@@ -309,6 +321,8 @@ public class MainController {
 	}
 
 	@GetMapping("/project/report/{id}")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public String reportAdd(Model model, @PathVariable Long id, Report report) {
 
 		String currentDate = java.time.LocalDate.now().toString();
@@ -332,6 +346,8 @@ public class MainController {
 	}
 
 	@PostMapping("/report")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public String reportGenerate(Report report, Project project) {
 		project = report.getPid();
 
@@ -352,9 +368,9 @@ public class MainController {
 	}
 
 	@GetMapping("/showallreport")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public String showAllReport(Model model) {
-
-		
 
 		model.addAttribute("report", reportService.findAllReport());
 
@@ -364,6 +380,8 @@ public class MainController {
 
 	// ADMIN SHOW ALL BUGS
 	@GetMapping("/project/adminShowAllBug/{id}")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public String ShowAllBugsProject(@PathVariable Long id, Model model, Project project) {
 
 		project = projectService.getProjectById(id);
@@ -376,6 +394,8 @@ public class MainController {
 	// DOWNLOAD AS A PDF
 
 	@GetMapping("project/download/{id}")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public String downloadReportPdf(@PathVariable Long id, Report report) {
 
 		report = reportService.getById(id);
@@ -392,21 +412,28 @@ public class MainController {
 		return "redirect:/";
 	}
 
-	@GetMapping("project/downloadExcel/{id}")
-	public String dowloadReportExcel(@PathVariable Long id, Report report) {
+	
+	//EXCEL REPORT
+	@GetMapping("project/downloadExcel")
+	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	public void dowloadReportExcel(Report report, HttpServletResponse response) throws IOException {
 
-		report = reportService.getById(id);
-		String str = report.getProjectname();
+		List<Report> reports = reportService.findAllReport();
 
-		String projectName = str.replaceAll("\\s", ""); // using built in method
+		response.setContentType("application/octet-stream");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
 
-		Map<String, Object> data = new HashMap<>();
-		data.put("report", report);
-		generateService.generateExcelFile("pdfReport", data, projectName + ".xlsx");
+		String headerValue = "attachment; filename=Reports" + currentDateTime + ".xlsx";
 
-		System.out.println("ho gayaaa bhaii");
+		String headerKey = "Content-Disposition";
+		response.setHeader(headerKey, headerValue);
 
-		return "redirect:/";
+		UserExcelExporter excelExporter = new UserExcelExporter(reports);
+
+		excelExporter.export(response);
+
 	}
 
 }
