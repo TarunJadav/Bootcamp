@@ -25,7 +25,8 @@ import com.BugTracker.entity.Team;
 import com.BugTracker.entity.User;
 import com.BugTracker.entity.UserRole;
 import com.BugTracker.service.BugService;
-import com.BugTracker.service.PdfGenerateService;
+import com.BugTracker.service.GenerateService;
+
 import com.BugTracker.service.ProjectService;
 import com.BugTracker.service.ReportService;
 import com.BugTracker.service.TeamService;
@@ -56,7 +57,7 @@ public class MainController {
 	private ReportService reportService;
 
 	@Autowired
-	private PdfGenerateService pdfGenerateService;
+	private GenerateService generateService;
 
 	@GetMapping("/")
 	public String homeShow(Principal principal, User user, Model model) {
@@ -310,13 +311,21 @@ public class MainController {
 	@GetMapping("/project/report/{id}")
 	public String reportAdd(Model model, @PathVariable Long id, Report report) {
 
+		String currentDate = java.time.LocalDate.now().toString();
+
 		Project project = projectService.getProjectById(id);
+
+		List<Bug> bugs = bugService.findAllByProjects(project);
+		Long totalBugs = (long) bugs.size();
+
 		report.setIsdeleted(project.isIsdeleted());
 		report.setPid(project);
 		report.setProjectname(project.getProjectname());
 		report.setStartdate(project.getStartdate());
 		report.setStatus(project.getStatus());
 		report.setTechonology(project.getTechonology());
+		report.setEnd_date(currentDate);
+		report.setTotalbugs(totalBugs);
 
 		model.addAttribute("project", report);
 		return "report";
@@ -342,13 +351,58 @@ public class MainController {
 		return "teams_projects";
 	}
 
-	@GetMapping("/download")
-	public String downloadPagae(Principal principal) {
-		List<User> user = userService.getAllUsers();
+	@GetMapping("/showallreport")
+	public String showAllReport(Model model) {
+
+		
+
+		model.addAttribute("report", reportService.findAllReport());
+
+		return "showAllReport";
+
+	}
+
+	// ADMIN SHOW ALL BUGS
+	@GetMapping("/project/adminShowAllBug/{id}")
+	public String ShowAllBugsProject(@PathVariable Long id, Model model, Project project) {
+
+		project = projectService.getProjectById(id);
+		List<Bug> bugs = bugService.findAllByProjects(project);
+		model.addAttribute("bug", bugs);
+
+		return "admin_showProjectBugs";
+	}
+
+	// DOWNLOAD AS A PDF
+
+	@GetMapping("project/download/{id}")
+	public String downloadReportPdf(@PathVariable Long id, Report report) {
+
+		report = reportService.getById(id);
+		String str = report.getProjectname();
+
+		String projectName = str.replaceAll("\\s", ""); // using built in method
 
 		Map<String, Object> data = new HashMap<>();
-		data.put("user", user);
-		pdfGenerateService.generatePdfFile("viewusers", data, "quotation.pdf");
+		data.put("report", report);
+		generateService.generatePdfFile("pdfReport", data, projectName + ".pdf");
+
+		System.out.println("ho gayaaa bhaii");
+
+		return "redirect:/";
+	}
+
+	@GetMapping("project/downloadExcel/{id}")
+	public String dowloadReportExcel(@PathVariable Long id, Report report) {
+
+		report = reportService.getById(id);
+		String str = report.getProjectname();
+
+		String projectName = str.replaceAll("\\s", ""); // using built in method
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("report", report);
+		generateService.generateExcelFile("pdfReport", data, projectName + ".xlsx");
 
 		System.out.println("ho gayaaa bhaii");
 

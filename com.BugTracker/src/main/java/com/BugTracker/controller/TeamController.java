@@ -197,16 +197,6 @@ public class TeamController {
 		return "view_teamusers";
 	}
 
-	@GetMapping("/project/finished/{id}")
 
-	public String projectFinished(@PathVariable Long id, Project project) {
-
-		project=projectService.getProjectById(id);
-		
-		project.setStatus("finished");
-
-		projectService.saveProject(project);
-		return "redirect:/?projectfinished";
-	}
 
 }

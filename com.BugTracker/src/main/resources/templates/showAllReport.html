@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>View Assigned Bugs</title>
+<title>List of Reports</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -22,6 +22,7 @@
 	integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
 	crossorigin="anonymous"></script>
 <body>
+
 	<nav class="navbar navbar-expand-lg navbar-light bg-warning">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="/">BugTracker</a>
@@ -52,39 +53,59 @@
 
 	<br>
 	<br>
-	<div class="container">
-		<div class=row>
-			<h1>View Your Bugs</h1>
-		</div>
 
+
+
+
+	<div class="container">
+
+		<div class=row>
+			<h1>List Of Reports</h1>
+
+		</div>
 		<div class="row">
 			<div class="col-lg-3"></div>
-
 		</div>
 		<table class="table table-striped table-bordered">
 			<thead class="table-dark">
-
 				<tr>
-					<th>Bug desc</th>
-					<th>Bug Status</th>
-					<th>Assigned Devloper</th>
-					<th>Project</th>
-					<th>Bug Priority</th>
-					<th>Action</th>
+					<th>Project Name</th>
+					<th>Project Techonology</th>
+					<th>Is Deleted</th>
+					<th>Project Status</th>
+					<th>Project Start date</th>
+					<th>Project end date</th>
+					<th>Project id</th>
+
+
+					<th colspan="2">Action</th>
 
 				</tr>
 
 			</thead>
 			<tbody>
-				<tr th:each=bug:${bug}>
-					<td th:text="${bug.bug_desc}"></td>
-					<td th:text="${bug.status}"></td>
-					<td th:text="${bug.user.firstname}"></td>
-					<td th:text="${bug.project.projectname}"></td>
-					<td th:text="${bug.priority}"></td>
-					<td><a th:href=@{bugreopen/adduser/{bugid}(bugid=${bug.id})}
-						class="btn btn-primary" style="margin-bottom: 10px;">Re-Open
-							Bug </a></td>
+				<tr th:each=project:${report}>
+					<td th:text="${project.projectname}"></td>
+					<td th:text="${project.techonology}"></td>
+					<td th:text="${project.isdeleted}"></td>
+					<td th:text="${project.status}"></td>
+					<td th:text="${project.startdate}"></td>
+					<td th:text="${project.end_date}"></td>
+					<td th:text="${project.pid.id}"></td> 
+
+
+
+					<td><a th:href=@{project/download/{id}(id=${project.id})}
+						class="btn btn-danger"
+						onclick="return confirm('Pakka na ? 😓😓😕')">download Report
+							as a pdf</a></td>
+
+
+					<td><a th:href=@{project/downloadExcel/{id}(id=${project.id})}
+						class="btn btn-danger"
+						onclick="return confirm('Pakka na ? 😓😓😕')">download Report
+							as a Excel</a></td>
+
 
 				</tr>
 

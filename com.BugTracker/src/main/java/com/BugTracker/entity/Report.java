@@ -21,10 +21,10 @@ public class Report {
 
 	private String end_date;
 
+	private Long totalbugs;
+
 	@OneToOne
 	private Project pid;
-
-	
 
 	public Long getId() {
 		return id;
@@ -90,10 +90,16 @@ public class Report {
 		this.pid = pid;
 	}
 
+	public Long getTotalbugs() {
+		return totalbugs;
+	}
 
+	public void setTotalbugs(Long totalbugs) {
+		this.totalbugs = totalbugs;
+	}
 
 	public Report(Long id, String projectname, String techonology, String status, boolean isdeleted, String startdate,
-			String end_date, Project pid) {
+			String end_date, Long totalbugs, Project pid) {
 		super();
 		this.id = id;
 		this.projectname = projectname;
@@ -102,8 +108,8 @@ public class Report {
 		this.isdeleted = isdeleted;
 		this.startdate = startdate;
 		this.end_date = end_date;
+		this.totalbugs = totalbugs;
 		this.pid = pid;
-		
 	}
 
 	public Report() {

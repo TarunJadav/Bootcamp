@@ -82,6 +82,8 @@
 					<th>Project Techonology</th>
 					<th>Is Deleted</th>
 					<th>Project Status</th>
+					<th>Project Teams</th>
+					<th>Action</th>
 
 
 				</tr>
@@ -92,6 +94,15 @@
 					<td th:text="${project.techonology}"></td>
 					<td th:text="${project.isdeleted}"></td>
 					<td th:text="${project.status}"></td>
+						<td><label>Dropdown </label><select 
+						class="form-control">
+							<option th:each="team : ${project.teams}" th:value="${team.id}"
+								th:text="${team.teamname}"></option>
+					</select></td>
+					
+					<td><a th:href=@{project/adminShowAllBug/{id}(id=${project.id})}
+						class="btn btn-primary" style="margin-bottom: 10px;">All Bugs Found in Project
+							</a></td>
 
 
 				</tr>

@@ -68,6 +68,9 @@ public class DevloperController {
 		return "showdevloperproject";
 	}
 
+	
+	
+	//DEVLOPER BUG VIEW
 	@GetMapping("/viewbugs")
 	@Secured("ROLE_DEVLOPER")
 	@PreAuthorize("hasAuthority('ROLE_DEVLOPER')")
@@ -78,7 +81,21 @@ public class DevloperController {
 		List<Bug> bugList = bugService.findAllByUser(user);
 		List<Bug> list = new ArrayList<Bug>();
 
-		Iterator<Bug> itr = bugList.iterator();
+		List<Bug> list2 = new ArrayList<Bug>();
+
+		for (Bug bug2 : bugList) {
+			if (bug2.getPriority().contains("High")) {
+				list.add(bug2);
+			}
+		}
+
+		for (Bug bug2 : bugList) {
+			if (bug2.getPriority().contains("Average")) {
+				list.add(bug2);
+			}
+		}
+
+		Iterator<Bug> itr = list.iterator();
 		while (itr.hasNext()) {
 			Bug bug2 = (Bug) itr.next();
 			if (bug2.getStatus().contains("solved")) {
@@ -88,13 +105,13 @@ public class DevloperController {
 				if (project.getStatus().contains("finished")) {
 					continue;
 				} else {
-					list.add(bug2);
+					list2.add(bug2);
 				}
 			}
 
 		}
 
-		model.addAttribute("bug", list);
+		model.addAttribute("bug", list2);
 
 		return "viewbugs_devloper";
 	}

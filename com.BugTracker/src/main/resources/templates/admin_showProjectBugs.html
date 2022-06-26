@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>View Assigned Bugs</title>
+<title>View Project Bugs</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -54,7 +54,7 @@
 	<br>
 	<div class="container">
 		<div class=row>
-			<h1>View Your Bugs</h1>
+			<h1>View Project Bugs</h1>
 		</div>
 
 		<div class="row">
@@ -67,10 +67,10 @@
 				<tr>
 					<th>Bug desc</th>
 					<th>Bug Status</th>
+					<th>Tester</th>
 					<th>Assigned Devloper</th>
 					<th>Project</th>
-					<th>Bug Priority</th>
-					<th>Action</th>
+
 
 				</tr>
 
@@ -79,15 +79,9 @@
 				<tr th:each=bug:${bug}>
 					<td th:text="${bug.bug_desc}"></td>
 					<td th:text="${bug.status}"></td>
+					<td th:text="${bug.tester.firstname}"></td>
 					<td th:text="${bug.user.firstname}"></td>
 					<td th:text="${bug.project.projectname}"></td>
-					<td th:text="${bug.priority}"></td>
-					<td><a th:href=@{bugreopen/adduser/{bugid}(bugid=${bug.id})}
-						class="btn btn-primary" style="margin-bottom: 10px;">Re-Open
-							Bug </a></td>
-
-				</tr>
-
 			</tbody>
 		</table>
 	</div>

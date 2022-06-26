@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>Insert title here</title>
+
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+	integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+	crossorigin="anonymous" />
+</head>
+<body>
+
+	<!--form  -->
+	<div class="container">
+		<div class="row">
+			<!-- success message -->
+
+			<div
+				class="col-lg-6  col-md-6 col-sm-6 container justify-content-center card">
+
+				<div class="card-body">
+					<h1 class="" style="margin-top: 20px">Project Report</h1>
+					<form th:object="${report}" method="post">
+						<div class="form-group">
+							<label>Project name :</label> <input type="text"
+								name="projectname" th:value="${report.projectname}"
+								placeholder="Enter your project name" class="form-control"></input>
+						</div>
+
+						<div class="form-group">
+							<label>Project id:</label> <input type="text" name="Project"
+								th:value="${report.pid.id}" placeholder="id"
+								class="form-control"> </input>
+						</div>
+
+
+						<div class="form-group">
+							<label>Project Technology :</label> <input type="text"
+								name="techonology" th:value="${report.techonology}"
+								placeholder="enter techonology" class="form-control"> </input>
+						</div>
+
+						<div class="form-group">
+							<label>Project status :</label> <input type="text" name="status"
+								th:value="${report.status}" placeholder="enter techonology"
+								class="form-control"></input>
+						</div>
+
+
+						<div class="form-group">
+							<label>Is Deleted :</label> <input type="text" name="isdeleted"
+								th:value="${report.isdeleted}" placeholder=""
+								class="form-control"></input>
+						</div>
+
+						<div class="form-group">
+							<label>start date :</label> <input type="text" name="end date"
+								th:value="${report.startdate}" placeholder=""
+								class="form-control"></input>
+						</div>
+
+						<div class="form-group">
+							<label>end date :</label> <input type="date" name="end date"
+								th:value="${report.end_date}" placeholder=""
+								class="form-control"></input>
+						</div>
+
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+</body>
+</html>

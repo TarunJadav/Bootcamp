@@ -69,8 +69,9 @@
 					<th>Bug Status</th>
 					<th>Tester</th>
 					<th>Project</th>
-                    <th>Action</th>
-                    
+					<th>Bug Priority</th>
+					<th>Action</th>
+
 				</tr>
 
 			</thead>
@@ -78,10 +79,10 @@
 				<tr th:each=bug:${bug}>
 					<td th:text="${bug.bug_desc}"></td>
 					<td th:text="${bug.status}"></td>
-			 		<td th:text="${bug.tester.id}"></td>
-					<td th:text="${bug.project.id}"></td>
-					<td><a
-						th:href="@{project/solvebug/{id}(id=${bug.id})}"
+					<td th:text="${bug.tester.firstname}"></td>
+					<td th:text="${bug.project.projectname}"></td>
+					<td th:text="${bug.priority}"></td>
+					<td><a th:href="@{project/solvebug/{id}(id=${bug.id})}"
 						class="btn btn-danger"
 						onclick="return confirm('Pakka na ? 😓😓😕')">solve bug</a></td>
 

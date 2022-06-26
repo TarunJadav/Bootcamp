@@ -18,6 +18,8 @@ public interface BugRepository extends JpaRepository<Bug, Long> {
 	List<Bug> findAllByTester(User user);
 	
 	List<Bug> findAllByUser(User user);
+	
+	List<Bug> findAllByPriority(String priority);
 
 
 }

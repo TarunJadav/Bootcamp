@@ -46,36 +46,40 @@
 						<div class="form-group">
 							<label>Project name :</label> <input type="text"
 								name="projectname" th:field="*{projectname}"
-								placeholder="Enter your project name" class="form-control">
+								placeholder="Enter your project name" class="form-control" readonly="readonly">
 						</div>
 
 						<div class="form-group">
 							<label>Project id:</label> <input type="text" name="Project"
-								th:field="*{pid.id}" placeholder="id" class="form-control">
+								th:field="*{pid.id}" placeholder="id" class="form-control"readonly="readonly">
 						</div>
 
 
 						<div class="form-group">
 							<label>Project Technology :</label> <input type="text"
 								name="techonology" th:field="*{techonology}"
-								placeholder="enter techonology" class="form-control">
+								placeholder="enter techonology" class="form-control"readonly="readonly">
 						</div>
                             
                             <div class="form-group">
 							<label>Project status :</label> <input type="text"
 								name="status" th:field="*{status}"
-								placeholder="enter techonology" class="form-control">
+								placeholder="enter techonology" class="form-control" readonly="readonly">
 						</div>
-                            
+                             <div class="form-group">
+							<label>Total Bugs Found In Project :</label> <input type="text"
+								name="status" th:field="*{totalbugs}"
+								placeholder="enter techonology" class="form-control" readonly="readonly">
+						</div>
                             
 						<div class="form-group">
 							<label>Is Deleted :</label> <input type="text" name="isdeleted"
-								th:field="*{isdeleted}" placeholder="" class="form-control">
+								th:field="*{isdeleted}" placeholder="" class="form-control" readonly="readonly">
 						</div>
 
 						<div class="form-group">
-							<label>start date :</label> <input type="text" name="end date"
-								th:field="*{startdate}" placeholder="" class="form-control">
+							<label>start date :</label> <input type="date" name="end date"
+								th:field="*{startdate}" placeholder="" class="form-control" readonly="readonly">
 						</div>
 
 						<div class="form-group">

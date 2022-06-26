@@ -78,16 +78,13 @@ public class ProjectController {
 			if (projectname.contains("unassigned")) {
 				continue;
 			} else {
-				
-				
-				Report report=reportRepository.findByPid(project);
-				if (report==null) {
+
+				Report report = reportRepository.findByPid(project);
+				if (report == null) {
 					projects.add(project);
 				}
 			}
 		}
-		
-		
 
 		model.addAttribute("project", projects);
 
@@ -234,6 +231,16 @@ public class ProjectController {
 		model.addAttribute("project", projects);
 
 		return "completedProject";
+	}
+
+	// PROJECT RE-OPEN
+	@GetMapping("/project/reopenProject/{id}")
+	public String reOpenProject(@PathVariable Long id, Model model, Project project) {
+		project = projectService.getProjectById(id);
+		project.setStatus("pending");
+		projectService.saveProject(project);
+
+		return "redirect:/";
 	}
 
 }

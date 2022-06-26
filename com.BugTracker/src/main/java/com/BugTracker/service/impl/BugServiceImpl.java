@@ -53,4 +53,10 @@ public class BugServiceImpl implements BugService {
 		return bugRepository.findAllByTester(user);
 	}
 
+	@Override
+	public List<Bug> findAllByPriority(String priority) {
+
+		return bugRepository.findAllByPriority(priority);
+	}
+
 }

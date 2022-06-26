@@ -22,6 +22,9 @@ public interface BugService {
 	
 	List<Bug> findAllByUser(User user);
 	
+	List<Bug> findAllByPriority(String priority);
+
+	
 
 	
   

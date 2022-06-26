@@ -19,13 +19,14 @@ public class Bug {
 	private Long id;
 	private String bug_desc;
 	private String status;
+	private String priority;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private User tester;
 
 	@OneToOne
 	private Project project;
-	
+
 	@ManyToOne
 	private User user;
 
@@ -69,8 +70,6 @@ public class Bug {
 		this.project = project;
 	}
 
-	
-
 	public User getUser() {
 		return user;
 	}
@@ -79,11 +78,20 @@ public class Bug {
 		this.user = user;
 	}
 
-	public Bug(Long id, String bug_desc, String status, User tester, Project project, User user) {
+	public String getPriority() {
+		return priority;
+	}
+
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+
+	public Bug(Long id, String bug_desc, String status, String priority, User tester, Project project, User user) {
 		super();
 		this.id = id;
 		this.bug_desc = bug_desc;
 		this.status = status;
+		this.priority = priority;
 		this.tester = tester;
 		this.project = project;
 		this.user = user;

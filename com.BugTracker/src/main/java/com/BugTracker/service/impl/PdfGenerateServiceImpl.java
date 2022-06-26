@@ -1,6 +1,7 @@
 package com.BugTracker.service.impl;
 
-import com.BugTracker.service.PdfGenerateService;
+import com.BugTracker.service.GenerateService;
+
 import com.lowagie.text.DocumentException;
 
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import java.io.FileOutputStream;
 import java.util.Map;
 
 @Service
-public class PdfGenerateServiceImpl implements PdfGenerateService{
+public class PdfGenerateServiceImpl implements GenerateService{
     private Logger logger = LoggerFactory.getLogger(PdfGenerateServiceImpl.class);
 
     @Autowired
@@ -47,4 +48,25 @@ public class PdfGenerateServiceImpl implements PdfGenerateService{
             logger.error(e.getMessage(), e);
         }
     }
+
+	@Override
+	public void generateExcelFile(String templateName, Map<String, Object> data, String pdfFileName) {
+	      Context context = new Context();
+	        context.setVariables(data);
+	        String htmlContent = templateEngine.process(templateName, context);
+	        
+	        
+	        try {
+	        	
+	        	 FileOutputStream fileOutputStream = new FileOutputStream(pdfDirectory + pdfFileName);
+	        	  ITextRenderer renderer = new ITextRenderer();
+	              renderer.setDocumentFromString(htmlContent);
+	              renderer.layout();
+	              
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		
+	}
 }

@@ -3,6 +3,7 @@ package com.BugTracker.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
 
@@ -109,17 +110,32 @@ public class TesterController {
 		List<Bug> list = new ArrayList<Bug>();
 		for (Bug bug : bugsList) {
 
+			if (bug.getPriority().contains("High")) {
+				list.add(bug);
+			}
+		}
+
+		for (Bug bug : bugsList) {
+
+			if (bug.getPriority().contains("Average")) {
+				list.add(bug);
+			}
+		}
+
+		List<Bug> list2 = new ArrayList<Bug>();
+		for (Bug bug : list) {
+
 			Project project = bug.getProject();
 			if (project.getStatus().contains("finished")) {
 				continue;
 			} else {
-				list.add(bug);
+				list2.add(bug);
 
 			}
 
 		}
 
-		model.addAttribute("bug", list);
+		model.addAttribute("bug", list2);
 
 		return "showBugs_Tester";
 
@@ -136,6 +152,18 @@ public class TesterController {
 		bugService.saveBug(bug);
 
 		return "redirect:/";
+	}
+
+	@GetMapping("/project/finished/{id}")
+
+	public String projectFinished(@PathVariable Long id, Project project) {
+
+		project = projectService.getProjectById(id);
+
+		project.setStatus("finished");
+
+		projectService.saveProject(project);
+		return "redirect:/?projectfinished";
 	}
 
 }
