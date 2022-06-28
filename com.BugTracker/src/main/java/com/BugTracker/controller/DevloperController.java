@@ -68,9 +68,7 @@ public class DevloperController {
 		return "showdevloperproject";
 	}
 
-	
-	
-	//DEVLOPER BUG VIEW
+	// DEVLOPER BUG VIEW
 	@GetMapping("/viewbugs")
 	@Secured("ROLE_DEVLOPER")
 	@PreAuthorize("hasAuthority('ROLE_DEVLOPER')")
@@ -105,6 +103,10 @@ public class DevloperController {
 				if (project.getStatus().contains("finished")) {
 					continue;
 				} else {
+					if (bug2.getStatus().contains("bugdone")) {
+						continue;
+					}
+
 					list2.add(bug2);
 				}
 			}

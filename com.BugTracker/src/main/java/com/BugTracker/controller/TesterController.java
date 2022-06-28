@@ -129,7 +129,11 @@ public class TesterController {
 			if (project.getStatus().contains("finished")) {
 				continue;
 			} else {
-				list2.add(bug);
+				if (bug.getStatus().contains("bugdone")) {
+					continue;
+				} else {
+					list2.add(bug);
+				}
 
 			}
 
@@ -160,10 +164,44 @@ public class TesterController {
 
 		project = projectService.getProjectById(id);
 
+		List<Bug> bugs = bugService.findAllByProjects(project);
+		for (Bug bug : bugs) {
+			if (bug.getStatus().contains("to-do")) {
+
+				return "redirect:/?Bug";
+			}
+
+		}
+		for (Bug bug : bugs) {
+			if (bug.getStatus().contains("pending")) {
+
+				return "redirect:/?Bug";
+			}
+
+		}
+		for (Bug bug : bugs) {
+			if (bug.getStatus().contains("solved")) {
+
+				return "redirect:/?Bug";
+			}
+
+		}
+
 		project.setStatus("finished");
 
 		projectService.saveProject(project);
 		return "redirect:/?projectfinished";
+	}
+
+	@GetMapping("/bug/complete/{bugid}")
+	public String bugComplete(@PathVariable Long bugid, Bug bug) {
+		bug = bugService.getBugById(bugid);
+
+		bug.setStatus("bugdone");
+
+		bugService.saveBug(bug);
+
+		return "redirect:/";
 	}
 
 }

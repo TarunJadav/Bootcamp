@@ -10,7 +10,7 @@
 </head>
 <body>
 
-	
+
 	<nav class="navbar navbar-expand-lg navbar-light bg-warning">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="/">Bug Tracker</a>
@@ -34,8 +34,12 @@
 			</div>
 		</div>
 	</nav>
-	
-	
+
+
+	<div th:if="${param.Bug}">
+		<div class="alert alert-danger">project Still has Bugs!</div>
+	</div>
+
 	<!-- success message -->
 	<div th:if="${param.projectfinished}">
 		<div class="alert alert-primary">project finished!</div>

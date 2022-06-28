@@ -70,7 +70,7 @@
 					<th>Assigned Devloper</th>
 					<th>Project</th>
 					<th>Bug Priority</th>
-					<th>Action</th>
+					<th colspan="2">Action</th>
 
 				</tr>
 
@@ -85,6 +85,10 @@
 					<td><a th:href=@{bugreopen/adduser/{bugid}(bugid=${bug.id})}
 						class="btn btn-primary" style="margin-bottom: 10px;">Re-Open
 							Bug </a></td>
+
+					<td><a th:href=@{bug/complete/{bugid}(bugid=${bug.id})}
+						class="btn btn-primary" style="margin-bottom: 10px;">Bug
+							Solved </a></td>
 
 				</tr>
 
